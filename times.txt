@@ -1,0 +1,24 @@
+10
+real 0.00
+user 0.00
+sys 0.00
+100
+real 0.04
+user 0.00
+sys 0.00
+1000
+real 0.00
+user 0.00
+sys 0.00
+10000
+real 0.00
+user 0.00
+sys 0.00
+100000
+real 0.02
+user 0.01
+sys 0.00
+1000000
+real 0.24
+user 0.13
+sys 0.03

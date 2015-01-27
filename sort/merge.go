@@ -2,16 +2,16 @@ package sort
 
 //import "fmt"
 
-func MergeSort(numbers []uint64) []uint64 {
+func MergeSort(numbers []int64) []int64 {
   n := len(numbers)
 
   if n==1 {
-    return []uint64{numbers[0]}
+    return []int64{numbers[0]}
   }
 
   if n==2 {
     var a, b = sortPair(numbers[0], numbers[1])
-    return []uint64{a, b}
+    return []int64{a, b}
   }
 
   foo := MergeSort(numbers[0:n/2])
@@ -21,7 +21,7 @@ func MergeSort(numbers []uint64) []uint64 {
 }
 
 
-func sortPair(n uint64, m uint64) (uint64, uint64)  {
+func sortPair(n int64, m int64) (int64, int64)  {
   if n <= m {
     return n, m
   } else {
@@ -30,13 +30,13 @@ func sortPair(n uint64, m uint64) (uint64, uint64)  {
 }
 
 
-func merge(num1 []uint64, num2 []uint64) []uint64 {
+func merge(num1 []int64, num2 []int64) []int64 {
 
   //fmt.Println("Merge")
   //fmt.Println(num1)
   //fmt.Println(num2)
 
-  var numbers []uint64
+  var numbers []int64
 
   var i, j = 0, 0
   var l1, l2 = len(num1), len(num2)

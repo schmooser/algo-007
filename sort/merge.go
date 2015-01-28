@@ -41,17 +41,17 @@ func merge(num1 []int64, num2 []int64) []int64 {
   var i, j = 0, 0
   var l1, l2 = len(num1), len(num2)
 
-  for !(i >= l1 && j >= l2) {
+  for i < l1 || j < l2 {
 
     //fmt.Printf("i=%d, j=%d\n", i, j)
 
-    if i >= l1 {
+    if i == l1 {
       numbers = append(numbers, num2[j])
       j++
       continue
     }
 
-    if j >= l2 {
+    if j == l2 {
       numbers = append(numbers, num1[i])
       i++
       continue

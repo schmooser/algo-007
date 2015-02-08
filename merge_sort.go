@@ -8,6 +8,7 @@ import (
   "github.com/schmooser/algo-007/sort"
 )
 
+
 func main() {
   n := flag.Int64("n", 42, "Number of entries in array")
   output := flag.Int("output", 1, "Turn on output")
@@ -28,5 +29,3 @@ func main() {
   }
   fmt.Println("Done!")
 }
-
-

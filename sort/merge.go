@@ -15,7 +15,7 @@ func MergeSort(numbers []int64) []int64 {
   n := len(numbers)
 
   if n==1 {
-    return []int64{numbers[0]}
+    return numbers
   }
 
   if n==2 {

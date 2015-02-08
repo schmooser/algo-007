@@ -14,6 +14,7 @@ import (
 
 func ReadLines(path string) (ints []int, err error) {
   var file *os.File
+
   if file, err = os.Open(path); err != nil {
     return
   }
@@ -26,7 +27,7 @@ func ReadLines(path string) (ints []int, err error) {
   for scanner.Scan() {
     line = scanner.Text()
     i, _ := strconv.ParseInt(line, 0, 0)
-    ints = append(ints, i)
+    ints = append(ints, int(i))
   }
 
   if err == io.EOF {

@@ -3,29 +3,18 @@ package main
 import (
   "fmt"
   "flag"
-  "math/rand"
-  "time"
+  //"math/rand"
+  //"time"
   "github.com/schmooser/algo-007/sort"
+  "github.com/schmooser/algo-007/util"
 )
 
 
 func main() {
-  n := flag.Int("n", 42, "Number of entries in array")
-  output := flag.Int("output", 1, "Turn on output")
+  filename := flag.String("filename", "input.txt", "File with integers")
   flag.Parse()
 
-  rand.Seed(time.Now().UTC().UnixNano())
-
-  var a []int
-
-  for i := 0; i < *n; i++ {
-    a = append(a, rand.Intn(*n))
-  }
-
-  if *output == 1 {
-    fmt.Printf("Array of length %d.\n", *n)
-    fmt.Println(a)
-    fmt.Println(sort.QuickSort(a))
-  }
-  fmt.Println("Done!")
+  a, _ := util.ReadLines(*filename)
+  comparisons := sort.QuickSort(a)
+  fmt.Printf("%d comparisons\n", comparisons)
 }

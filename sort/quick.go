@@ -18,8 +18,8 @@ func init() {
   rand.Seed(time.Now().UTC().UnixNano())
 }
 
-func QuickSort(numbers []int) []int {
-
+func QuickSort(numbers []int) (n int) {
+    /* sort array, return number of comparisons */
 
   //fmt.Println("Input:")
   //fmt.Println(numbers)
@@ -27,8 +27,10 @@ func QuickSort(numbers []int) []int {
 
   if len(numbers) <= 1 {
     //fmt.Println("It's time to return")
-    return numbers
+    return 0
   }
+
+  n = len(numbers)-1
 
   pos := choosePivot(numbers)
   //fmt.Printf("Chosen %d (%d) as a pivot\n", pos, numbers[pos])
@@ -58,24 +60,59 @@ func QuickSort(numbers []int) []int {
   //fmt.Println("After partitioning:")
   //fmt.Println(numbers)
 
-  QuickSort(numbers[:i-1])
+  n += QuickSort(numbers[:i-1])
 
   //fmt.Println("Intermediate result:")
   //fmt.Println(numbers)
 
   if len(numbers) > i {
-    QuickSort(numbers[i:])
+    n += QuickSort(numbers[i:])
   }
 
   //fmt.Println("Result:")
   //fmt.Println(numbers)
 
-  return numbers
+  return n
 }
 
 func choosePivot(numbers []int) int {
   /* Choose pivot from given array */
-  return rand.Intn(len(numbers))
+  //return rand.Intn(len(numbers))
+  //return 0 // Question 1 - 162085
+  //return len(numbers)-1 // Question 2 - 164123
+
+  // median // Question 3 - 138382
+  l := len(numbers)
+
+  var m int
+
+  if l % 2 == 0 {
+    m = (l-1)/2
+  } else {
+    m = l/2
+  }
+
+  x := numbers[0]
+  y := numbers[m]
+  z := numbers[l-1]
+
+  //fmt.Println(numbers)
+  //fmt.Println(x, y, z)
+
+  if x >= y && y >= z || x <= y && y <= z {
+    return m
+  }
+
+  if y >= x && x >= z || y <= x && x <= z {
+    return 0
+  }
+
+  if x >= z && z >= y || x <= z && z <= y {
+    return l-1
+  }
+
+  return -1
+
 }
 
 func swap(numbers []int, i int, j int) {

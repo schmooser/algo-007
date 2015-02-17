@@ -6,48 +6,162 @@ Author: Pavel Popov <pavelpopov@outlook.com>
 
 package graph
 
-import "fmt"
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+
 
 type Edge struct {
-  From, To int
+    From, To int
+}
+
+type Vortex struct {
+    X int
+}
+
+type Vortices []Vortex
+type Edges []Edge
+
+
+func init() {
+    rand.Seed(time.Now().UTC().UnixNano())
+    //rand.Seed(13)
 }
 
 
-func MakeGraph(filename string) (edges []Edge) {
+func MakeGraph(rows [][]int) (vortices Vortices, edges Edges) {
     /*
-    input file contains data for a graph:
-    1 2 4 5
-    2 1
-    3 4 5
-    4 1 3
-    5 1 3
-    First column is a Vertex number
-    Other is connected Vertexes
+    input rows contain data for a graph:
+        1 2 4 5
+        2 1
+        3 4 5
+        4 1 3
+        5 1 3
+    First column is a Vertex number.
+    Other is connected Vertexes.
     */
 
-    fmt.Printf("Importing %s\n", filename)
 
+    /*
     var rows [][]int;
     rows = append(rows, []int{1, 2, 4, 5})
     rows = append(rows, []int{2, 1})
     rows = append(rows, []int{3, 4, 5})
     rows = append(rows, []int{4, 1, 3})
     rows = append(rows, []int{5, 1, 3})
+    */
 
-    for i := range rows {
-        fmt.Println(rows[i])
-        row := rows[i]
-        edge := row[0]
-        for j := range row {
-            if row[j] > edge {
-                edges = append(edges, Edge{edge, row[j]})
+    //rows, _ := util.ReadGraph(filename)
+
+    for _, row := range rows {
+        vortex := Vortex{row[0]}
+        vortices = append(vortices, vortex)
+        for _, x := range row {
+            if x > vortex.X {
+                edges = append(edges, Edge{vortex.X, x})
             }
         }
     }
 
-    for i := range edges {
-        fmt.Println(edges[i])
+    return
+}
+
+
+func swapWithLast(edges []Edge, pos int) []Edge {
+    return edges
+}
+
+
+func (vortices Vortices) removeVortex(k int) (vv Vortices, err error) {
+    l := len(vortices)-1
+    _, vortices[k] = vortices[k], vortices[l]
+    vv = vortices[:l]
+    err = nil
+    return
+}
+
+
+func KargerContraction(vortices Vortices, edges []Edge) (Vortices, []Edge) {
+
+
+    if len(vortices) == 2 {
+        return vortices, edges
     }
 
-    return nil
+    var print bool = false
+
+    if len(vortices) < 0 {
+        print = true
+    }
+
+    if print {
+        fmt.Println("KargerContraction invoked")
+        fmt.Printf("Len(vortices) = %d\n", len(vortices))
+
+        fmt.Println("Vortices")
+        fmt.Println(vortices)
+
+        fmt.Println("Edges")
+        fmt.Println(edges)
+    }
+
+    k := rand.Intn(len(edges))
+
+    // swap chosen edge with the last in slice, x - contracted edge
+    var x Edge
+
+    edges[k], x = edges[len(edges)-1], edges[k]
+    edges = edges[:len(edges)-1]
+
+    if print {
+        fmt.Println("Selected edge")
+        fmt.Println(x)
+    }
+
+    for i, v := range vortices {
+        if v.X == x.To { // remove vortex
+            vortices, _ = vortices.removeVortex(i)
+            break
+        }
+    }
+
+    //fmt.Println("Before merge")
+
+    // merge into super vertex
+    for i := range edges {
+        if edges[i].From == x.To {
+            edges[i].From = x.From
+        }
+
+        if edges[i].To == x.To {
+            edges[i].To = x.From
+        }
+    }
+
+    if print {
+        fmt.Println("Edges after contraction")
+        fmt.Println(edges)
+    }
+
+    //fmt.Println("After merge")
+
+    // Remove self-loops
+    cross_edges := make(Edges, 0)
+
+    for _, edge := range edges {
+        if edge.From != edge.To {
+            cross_edges = append(cross_edges, edge)
+        }
+    }
+
+    if print {
+        fmt.Println("Crossing edges")
+        fmt.Println(cross_edges)
+    }
+
+    return KargerContraction(vortices, cross_edges)
 }
+
+

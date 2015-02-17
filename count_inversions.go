@@ -4,6 +4,7 @@ import (
   "fmt"
   "flag"
   "github.com/schmooser/algo-007/inversions"
+  "github.com/schmooser/algo-007/util"
 )
 
 import (
@@ -13,36 +14,13 @@ import (
   "strconv"
 )
 
-func readLines(path string) (ints []int64, err error) {
-  var file *os.File
-  if file, err = os.Open(path); err != nil {
-    return
-  }
-  defer file.Close()
-
-  var line string
-
-  scanner := bufio.NewScanner(file)
-
-  for scanner.Scan() {
-    line = scanner.Text()
-    i, _ := strconv.ParseInt(line, 0, 64)
-    ints = append(ints, i)
-  }
-
-  if err == io.EOF {
-    err = nil
-  }
-
-  return
-}
 
 func main() {
   filename := flag.String("filename", "input.txt", "File with integers")
   output := flag.Int("output", 0, "Turn on output")
   flag.Parse()
 
-  a, _ := readLines(*filename)
+  a, _ := util.ReadInts(*filename)
 
   var s int64 = 0
 

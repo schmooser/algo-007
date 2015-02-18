@@ -16,7 +16,7 @@ func main() {
 */
 
 func main() {
-	filename := "data/kargerMinCut.txt"
+	filename := "../data/kargerMinCut.txt"
 
 	fmt.Printf("Importing %s\n", filename)
 	rows, _ := util.ReadRows(filename, " ")

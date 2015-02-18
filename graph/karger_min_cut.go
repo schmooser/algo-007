@@ -12,17 +12,6 @@ import (
 	"time"
 )
 
-type Edge struct {
-	From, To int
-}
-
-type Vortex struct {
-	X int
-}
-
-type Vortices []Vortex
-type Edges []Edge
-
 func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	//rand.Seed(13)

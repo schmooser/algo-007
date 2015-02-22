@@ -93,7 +93,7 @@ func (g *Graph) DFS_Loop(direction Direction) {
 		for i := len(g.Nodes) - 1; i >= 0; i-- {
 			fmt.Printf("Processing %dth node\n", g.fv[i])
 			if !g.Nodes[g.fv[i]].explored {
-				g.s = g.fv[i]
+				g.s++
 				g.DFS(g.Nodes[g.fv[i]], direction)
 			}
 		}
@@ -128,6 +128,7 @@ func (g *Graph) DFS(node *Node, direction Direction) {
 // From computing SCCS Kosaraju algorithm is used.
 func (g *Graph) StronglyConnectedComponents() {
 	g.t = 0
+	g.s = 0
 	g.fv = make([]int, len(g.Nodes))
 	g.DFS_Loop(Backward)
 
@@ -140,4 +141,21 @@ func (g *Graph) StronglyConnectedComponents() {
 	}
 
 	g.DFS_Loop(Forward)
+}
+
+// SizeSCCS computes sizes of Strongly connected components of the graph.
+func (g *Graph) SizeSCCS() []int {
+	sizes := make(map[int]int)
+	for _, node := range g.Nodes {
+		if _, ok := sizes[node.leader]; !ok {
+			sizes[node.leader] = 1
+		} else {
+			sizes[node.leader]++
+		}
+	}
+	v := make([]int, 0, len(sizes))
+	for _, value := range sizes {
+		v = append(v, value)
+	}
+	return v
 }

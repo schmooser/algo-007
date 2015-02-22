@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"github.com/schmooser/algo-007/graph"
+	"github.com/schmooser/algo-007/sort"
 )
 
 var err error
@@ -83,4 +84,7 @@ func main() {
 
 	printGraph(G)
 
+	sccs := sort.QuickSort(G.SizeSCCS())
+	fmt.Println(sccs)
+	fmt.Println(sccs[len(sccs)-2:])
 }

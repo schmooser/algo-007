@@ -17,25 +17,25 @@ func init() {
 	//rand.Seed(13)
 }
 
+/*
+	input rows contain data for a graph:
+		1 2 4 5
+		2 1
+		3 4 5
+		4 1 3
+		5 1 3
+	First column is a Vertex number.
+	Other is connected Vertexes.
+*/
 func MakeGraph(rows [][]int) (vortices Vortices, edges Edges) {
-	/*
-	   input rows contain data for a graph:
-	       1 2 4 5
-	       2 1
-	       3 4 5
-	       4 1 3
-	       5 1 3
-	   First column is a Vertex number.
-	   Other is connected Vertexes.
-	*/
 
 	/*
-	   var rows [][]int;
-	   rows = append(rows, []int{1, 2, 4, 5})
-	   rows = append(rows, []int{2, 1})
-	   rows = append(rows, []int{3, 4, 5})
-	   rows = append(rows, []int{4, 1, 3})
-	   rows = append(rows, []int{5, 1, 3})
+	var rows [][]int;
+	rows = append(rows, []int{1, 2, 4, 5})
+	rows = append(rows, []int{2, 1})
+	rows = append(rows, []int{3, 4, 5})
+	rows = append(rows, []int{4, 1, 3})
+	rows = append(rows, []int{5, 1, 3})
 	*/
 
 	//rows, _ := util.ReadGraph(filename)

@@ -5,7 +5,7 @@ Author: Pavel Popov <pavelpopov@outlook.com>
 package graph
 
 import (
-	"errors"
+	//"errors"
 	"fmt"
 )
 
@@ -57,12 +57,14 @@ func (g *Graph) MakeArc(from, to *Node) error {
 // MakeArcWeight add arc between nodes. If such arc already exists it will
 // update weight of the arc.
 func (g *Graph) MakeArcWeight(from, to *Node, weight int) error {
-	if from.index >= len(g.Nodes) || g.Nodes[from.index] != from {
-		return errors.New("Node From does not belong to this graph")
-	}
-	if to.index >= len(g.Nodes) || g.Nodes[to.index] != to {
-		return errors.New("Node To does not belong to this graph")
-	}
+	/*
+		if from.index >= len(g.Nodes) || g.Nodes[from.index] != from {
+			return errors.New("Node From does not belong to this graph")
+		}
+		if to.index >= len(g.Nodes) || g.Nodes[to.index] != to {
+			return errors.New("Node To does not belong to this graph")
+		}
+	*/
 
 	// check if such arc already exists
 	for i, arc := range from.arcsOut {
@@ -82,18 +84,22 @@ func (g *Graph) MakeArcWeight(from, to *Node, weight int) error {
 // DFS_Loop
 func (g *Graph) DFS_Loop(direction Direction) {
 	fmt.Printf("DFS_Loop with direction %d\n", direction)
+	g.t = 0                    // number of nodes processed so far
+	g.s = -1                   // current source node
 	if direction == Backward { // first call
 		for i := len(g.Nodes) - 1; i >= 0; i-- {
-			fmt.Printf("Processing %dth node\n", i)
+			//fmt.Printf("Processing %dth node\n", i)
 			if !g.Nodes[i].explored {
 				g.DFS(g.Nodes[i], direction)
 			}
 		}
 	} else { // second call
+		//fmt.Println("Processing times:")
+		//fmt.Println(g.fv)
 		for i := len(g.Nodes) - 1; i >= 0; i-- {
-			fmt.Printf("Processing %dth node\n", g.fv[i])
+			//fmt.Printf("Processing %dth node\n", g.fv[i])
 			if !g.Nodes[g.fv[i]].explored {
-				g.s++
+				g.s = g.fv[i]
 				g.DFS(g.Nodes[g.fv[i]], direction)
 			}
 		}
@@ -104,21 +110,28 @@ func (g *Graph) DFS_Loop(direction Direction) {
 func (g *Graph) DFS(node *Node, direction Direction) {
 	fmt.Printf("DFS on node %d with direction %d\n", node.index, direction)
 	node.explored = true
-	node.leader = g.s
+
+	if direction == Forward {
+		node.leader = g.s
+	}
+
 	var arcs []arc
 	if direction == Forward {
 		arcs = node.arcsOut
 	} else {
 		arcs = node.arcsIn
 	}
+
 	for _, arc := range arcs {
 		if !arc.end.explored {
 			g.DFS(arc.end, direction)
 		}
 	}
+
 	g.t++
 	if direction == Backward {
-		g.fv[node.index] = g.t - 1
+		//fmt.Printf("Set f(%d) to %d\n", node.index, g.t-1)
+		g.fv[g.t-1] = node.index
 	}
 }
 
@@ -127,13 +140,11 @@ func (g *Graph) DFS(node *Node, direction Direction) {
 // which are strongly connected components from original graph.
 // From computing SCCS Kosaraju algorithm is used.
 func (g *Graph) StronglyConnectedComponents() {
-	g.t = 0
-	g.s = 0
 	g.fv = make([]int, len(g.Nodes))
 	g.DFS_Loop(Backward)
 
-	fmt.Println("fv after run on the Reversed graph")
-	fmt.Println(g.fv)
+	//fmt.Println("fv after run on the Reversed graph")
+	//fmt.Println(g.fv)
 
 	//mark all nodes unexplored
 	for _, node := range g.Nodes {

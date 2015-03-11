@@ -19,8 +19,9 @@ type Graph struct {
 }
 
 type Vertex struct {
-	E   []*Edge
-	inX bool // true if Vertex is processed and placed into X
+	E     []*Edge
+	index int  // position in array of vertices
+	inX   bool // true if Vertex is processed and placed into X
 }
 
 type Edge struct {
@@ -43,6 +44,7 @@ func graphFromFile(path string) *Graph {
 
 	for i := 0; i < len(g.V); i++ {
 		g.V[i] = new(Vertex)
+		g.V[i].index = i
 	}
 
 	fmt.Println("Vertices were added to the graph.")
@@ -101,13 +103,12 @@ func (g *Graph) DijkstraShortestPaths(s *Vertex) []int {
 	for len(g.X) < len(g.V) {
 
 		gc = 1000000
-		for i, v := range g.X {
+		for _, v := range g.X {
+			//fmt.Println(v)
+			//fmt.Println(g.A)
 			for _, e := range v.E {
-				//fmt.Println(e)
-				//fmt.Println(e)
-				if !e.end.inX && g.A[i]+e.l < gc {
-					fmt.Println("here")
-					gc = g.A[i] + e.l
+				if !e.end.inX && g.A[v.index]+e.l < gc {
+					gc = g.A[v.index] + e.l
 					w = e.end
 				}
 			}
@@ -144,7 +145,7 @@ func main() {
 	//G := graphFromFile("../data/dijkstraData-test.txt")
 	fmt.Println("Graph is built!")
 	fmt.Println(G)
-	s := G.vertexByIndex(5)
+	s := G.vertexByIndex(0)
 	paths := G.DijkstraShortestPaths(s)
 	fmt.Println(G)
 	fmt.Println(paths)

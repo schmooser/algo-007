@@ -30,12 +30,12 @@ func init() {
 func MakeGraph(rows [][]int) (vortices Vortices, edges Edges) {
 
 	/*
-	var rows [][]int;
-	rows = append(rows, []int{1, 2, 4, 5})
-	rows = append(rows, []int{2, 1})
-	rows = append(rows, []int{3, 4, 5})
-	rows = append(rows, []int{4, 1, 3})
-	rows = append(rows, []int{5, 1, 3})
+		var rows [][]int;
+		rows = append(rows, []int{1, 2, 4, 5})
+		rows = append(rows, []int{2, 1})
+		rows = append(rows, []int{3, 4, 5})
+		rows = append(rows, []int{4, 1, 3})
+		rows = append(rows, []int{5, 1, 3})
 	*/
 
 	//rows, _ := util.ReadGraph(filename)
